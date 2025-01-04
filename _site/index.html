@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+  <header class="bg-gray-800 py-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <h1 class="text-3xl font-bold">D&D Character Creator</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="/" class="hover:text-gray-400">Home</a></li>
+          <li><a href="/about/" class="hover:text-gray-400">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8 flex-grow">
+    
+<div class="flex justify-center mb-8">
+    <button id="open-modal" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg text-lg">
+        Create New Character
+    </button>
+</div>
+<!-- Modal Backdrop -->
+<div
+    id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <!-- Modal Container -->
+    <div
+        class="bg-white text-black w-3/4 max-w-2xl rounded-lg shadow-lg p-6 max-h-[90vh] overflow-y-auto">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center border-b pb-3">
+            <h2 class="text-xl font-bold">Create New Character</h2>
+            <button id="close-modal" class="text-gray-500 hover:text-black">
+                &times;
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <div
+            class="mt-6">
+            <!-- Page 1: Class -->
+            <div id="page-class" class="modal-page">
+                <h3 class="text-lg font-semibold">Select Your Class</h3>
+                <div class="mt-4">
+                    <label for="class-select" class="block text-sm font-medium text-gray-700">Class</label>
+                    <select id="class-select" class="w-full mt-1 p-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                        <option value="fighter" data-fluff="A master of martial combat.">Fighter</option>
+                        <option value="wizard" data-fluff="A scholar of arcane magic.">Wizard</option>
+                        <option value="rogue" data-fluff="A stealthy and dexterous character.">Rogue</option>
+                    </select>
+                    <p id="class-fluff" class="mt-2 text-gray-600">A master of martial combat.</p>
+                </div>
+            </div>
+            <!-- Page 2: Race Selection -->
+            <div id="page-race" class="modal-page hidden">
+                <h3 class="text-lg font-semibold">Select Your Species</h3>
+                <div class="mt-4">
+                    <label for="race-select" class="block text-sm font-medium text-gray-700">Race</label>
+                    <select id="race-select" class="w-full mt-1 p-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                        <option value="human" data-fluff="Adaptable and ambitious.">Human</option>
+                        <option value="elf" data-fluff="Graceful and long-lived.">Elf</option>
+                        <option value="dwarf" data-fluff="Strong and resilient.">Dwarf</option>
+                    </select>
+                    <p id="race-fluff" class="mt-2 text-gray-600">Adaptable and ambitious.</p>
+                </div>
+            </div>
+            <!-- Page 3: Background Selection -->
+            <div id="page-background" class="modal-page hidden">
+                <h3 class="text-lg font-semibold">Select Your Background</h3>
+                <div class="mt-4">
+                    <label for="background-select" class="block text-sm font-medium text-gray-700">Background</label>
+                    <select id="background-select" class="w-full mt-1 p-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                        <option value="noble" data-fluff="Raised among the elite.">Noble</option>
+                        <option value="soldier" data-fluff="Trained in battle.">Soldier</option>
+                        <option value="outlander" data-fluff="Lived in the wilderness.">Outlander</option>
+                    </select>
+                    <p id="background-fluff" class="mt-2 text-gray-600">Raised among the elite.</p>
+                </div>
+            </div>
+            <!-- Page 4: Stat Distribution -->
+            <div id="page-stats" class="modal-page hidden">
+                <h3 class="text-lg font-semibold mb-4">Distribute Your Stats</h3>
+                <!-- Shared grid for all stats -->
+                <div
+                    class="grid gap-4">
+                    <!-- Header Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] gap-4 font-semibold text-center">
+                        <div class="text-left">Ability</div>
+                        <div>Bonus</div>
+                        <div>Total</div>
+                    </div>
+                    <!-- STR Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="str-slider" class="block text-sm font-medium">STR</label>
+                            <input id="str-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="str-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="str-bonus" class="text-sm text-center">+0</div>
+                        <div id="str-total" class="text-sm text-center">8</div>
+                    </div>
+                    <!-- DEX Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="dex-slider" class="block text-sm font-medium">DEX</label>
+                            <input id="dex-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="dex-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="dex-bonus" class="text-sm text-center">+1</div>
+                        <div id="dex-total" class="text-sm text-center">9</div>
+                    </div>
+                    <!-- CON Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="con-slider" class="block text-sm font-medium">CON</label>
+                            <input id="con-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="con-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="con-bonus" class="text-sm text-center">+2</div>
+                        <div id="con-total" class="text-sm text-center">10</div>
+                    </div>
+                    <!-- WIS Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="wis-slider" class="block text-sm font-medium">WIS</label>
+                            <input id="wis-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="wis-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="wis-bonus" class="text-sm text-center">+0</div>
+                        <div id="wis-total" class="text-sm text-center">8</div>
+                    </div>
+                    <!-- INT Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="int-slider" class="block text-sm font-medium">INT</label>
+                            <input id="int-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="int-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="int-bonus" class="text-sm text-center">+0</div>
+                        <div id="int-total" class="text-sm text-center">8</div>
+                    </div>
+                    <!-- CHA Row -->
+                    <div class="grid grid-cols-[50%_25%_25%] items-center gap-4">
+                        <div class="col-span-1">
+                            <label for="cha-slider" class="block text-sm font-medium">CHA</label>
+                            <input id="cha-slider" type="range" min="8" max="15" value="8" class="w-full"/>
+                            <span id="cha-value" class="text-sm text-gray-600">8</span>
+                        </div>
+                        <div id="cha-bonus" class="text-sm text-center">+1</div>
+                        <div id="cha-total" class="text-sm text-center">9</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Page 5: Equipment -->
+            <div id="page-equipment" class="modal-page hidden">
+                <h3 class="text-lg font-semibold">Select Your Equipment</h3>
+                <p class="mt-2">Equipment selection page (to be implemented).</p>
+            </div>
+            <!-- Page 6: Miscellaneous -->
+            <div id="page-misc" class="modal-page hidden">
+                <h3 class="text-lg font-semibold">Miscellaneous Details</h3>
+                <p class="mt-2">Miscellaneous page (to be implemented).</p>
+            </div>
+        </div>
+        <!-- Divider -->
+        <hr
+            class="border-gray-300 mt-6 mb-4">
+            <!-- Modal Footer -->
+            <div class="relative justify-between items-center mt-6 pt-10">
+                <button
+                    id="prev-page"
+                    class="absolute bottom-0 left-0 bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400 hidden">
+                    Previous
+                </button>
+                <button id="next-page" class="absolute bottom-0 right-0 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+    <section class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Your Characters</h2>
+        <ul class="space-y-4">
+            <li class="bg-gray-700 p-4 rounded-md flex justify-between items-center">
+                <span class="text-lg font-medium">Character Name 1</span>
+                <a href="#" class="text-blue-400 hover:underline">View Details</a>
+            </li>
+            <li class="bg-gray-700 p-4 rounded-md flex justify-between items-center">
+                <span class="text-lg font-medium">Character Name 2</span>
+                <a href="#" class="text-blue-400 hover:underline">View Details</a>
+            </li>
+        </ul>
+    </section>
+    <!-- Include the JavaScript -->
+    <script src="/js/modal.js"></script>
+  </main>
+
+  <footer class="bg-gray-800 py-4">
+    <div class="container mx-auto text-center text-sm">
+      <p>&copy; 2025 D&D Character Creator. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

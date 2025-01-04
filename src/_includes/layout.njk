@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+  <header class="bg-gray-800 py-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <h1 class="text-3xl font-bold">D&D Character Creator</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="/" class="hover:text-gray-400">Home</a></li>
+          <li><a href="/about/" class="hover:text-gray-400">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8 flex-grow">
+    {{ content | safe }}
+  </main>
+
+  <footer class="bg-gray-800 py-4">
+    <div class="container mx-auto text-center text-sm">
+      <p>&copy; 2025 D&D Character Creator. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
